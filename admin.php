@@ -58,7 +58,7 @@ $resultadomateria=$conexion->query($materia);
     <meta name="author" content="">
     <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
 
-    <title>Sistema de Matricula - Administración de Usuarios</title>
+    <title>Administración de usuarios</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/jumbotron/">
 
@@ -80,14 +80,15 @@ $resultadomateria=$conexion->query($materia);
 				<?php echo $row['nombreA']; ?>
 			</button>
 			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-				<a class="dropdown-item" href="#">Perfil</a>
-				<a class="dropdown-item" href="#">Cerrar</a>
+				<a class="dropdown-item" href="perfil.php">Perfil</a>
+				<a class="dropdown-item" href="salir.php">Cerrar</a>
 			</div>
 		</div>
       </div>
     </nav>
 
     <main role="main">
+      
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">

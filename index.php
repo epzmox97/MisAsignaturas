@@ -60,7 +60,7 @@ if(!empty($_POST)){
         <form action="<?php $_SERVER["PHP_SELF"];?>" method="POST" class="form-inline my-2 my-lg-0">
           <a href="registrousuario.php">Crear Cuenta</a>
           <input class="form-control mr-sm-2" type="text" name="user" placeholder="Nombre Usuario" aria-label="user">
-          <input class="form-control mr-sm-2" type="text" name="password" placeholder="Password" aria-label="password">
+          <input class="form-control mr-sm-2" type="password" name="password" placeholder="Password" aria-label="password">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="ingresar">Ingresar</button>
         </form>
       </div>

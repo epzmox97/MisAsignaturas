@@ -1,6 +1,6 @@
 <?php 
 $server="localhost";
 $user="root";
-$pass="123456";
+$pass="";
 $bd="misasignaturas";
 ?>

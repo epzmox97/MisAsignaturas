@@ -26,7 +26,7 @@
           $resultaoalumno=$conexion->query($sqlalumnos);
         $idalumno=$conexion->insert_id;
 
-        $sqlusuarios="INSERT INTO usuarios(nombreU,passwordU,idAlumo,idTipousuario)
+        $sqlusuarios="INSERT INTO usuarios(nombreU,passwordU,idAlumno,idTipousuario)
                     VALUES ('$usuario','$password_encriptada','$idalumno','$tipouser')";
         $resultadousuario=$conexion->query($sqlusuarios);
         if($resultadousuario>0){
@@ -111,8 +111,8 @@
                   <label for="exampleFormControlSelect1">Genero</label>
                     <select class="form-control" id="exampleFormControlSelect1" name="genero">
                     <option selected>selecione...</option>
-                        <option>Masculino</option>
-                        <option>Femenino</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
                     </select>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                     </div>
                     <div class="form-group col-md-6">
                     <label for="inputPassword4">Password</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="pass">
+                    <input type="text" class="form-control" id="inputPassword4" placeholder="Password" name="pass">
                     </div>
             </div>
             <button type="submit" class="btn btn-primary" name="registrar">Registrar</button>
