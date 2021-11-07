@@ -8,8 +8,7 @@ session_start();
 
 $iduser=$_SESSION['id_Usuario'];
 $sql="SELECT u.idUsuario, a.nombreA FROM usuarios 
- AS u INNER JOIN alumnos AS a ON u.idAlumno=a.idAlumno 
- WHERE u.idUsuario='$iduser'";
+ AS u INNER JOIN alumnos AS a ON u.idAlumno=a.idAlumno WHERE u.idUsuario='$iduser'";
  $resultado=$conexion->query($sql);
  $row=$resultado->fetch_assoc();
 
@@ -18,7 +17,7 @@ if (!empty($_POST))
 	$codigo=mysqli_real_escape_string($conexion,$_POST['cod']);
 	$asignatura=mysqli_real_escape_string($conexion,$_POST['nom']);
 	$nota=mysqli_real_escape_string($conexion,$_POST['nota']);
-	$vermaterias="SELECT idasignatura, codigoasignatura, nombreasignatura, nota FROM asignaturas WHERE codigoasginatura='$codigo' OR nombreasignatura='$asignatura'";
+	$vermaterias="SELECT idasignatura, codigoasignatura, nombreasignatura, nota FROM asignaturas WHERE codigoasginatura='$codigo' AND idAlumno='$iduser'";
 	$existemateria=$conexion->query($vermaterias);
 	$fila= $existemateria->num_rows;
     
@@ -29,7 +28,7 @@ if (!empty($_POST))
 			  </script>";
 
 	}else{
-		$sqlmateria="INSERT INTO asignaturas(codigoasignatura, nombreasignatura, nota) VALUES ('$codigo','$asignatura','$nota')";
+		$sqlmateria="INSERT INTO asignaturas(codigoasignatura, nombreasignatura, nota,idAlumno) VALUES ('$codigo','$asignatura','$nota','$iduser')";
 		$resultadomateria=$conexion->query($sqlmateria);
 		
 		if($resultadomateria>0){
@@ -46,7 +45,8 @@ if (!empty($_POST))
 		}
 	}
 }
-$materia="SELECT idasignatura,codigoasignatura,nombreasignatura,nota FROM asignaturas";
+$materia="SELECT u.idUsuario, m.idasignatura, m.codigoasignatura,m.nombreasignatura,m.nota FROM usuarios as u INNER JOIN asignaturas
+          AS m ON u.idUsuario=m.idAlumno WHERE u.idUsuario='$iduser'";
 $resultadomateria=$conexion->query($materia);
 ?>
 <!doctype html>
@@ -62,10 +62,8 @@ $resultadomateria=$conexion->query($materia);
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/jumbotron/">
 
-    <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
     <link href="jumbotron.css" rel="stylesheet">
   </head>
 
@@ -74,6 +72,13 @@ $resultadomateria=$conexion->query($materia);
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
         <?php require_once("menusuperior.php"); ?>
+        <?php 
+          if($_SESSION['tipo_usuario']==1)
+          {?>
+            <li class="nav.item">
+              <a class="nav-link disabled" href="listausuarios.php">Lista de usuarios</a>
+            </li>              
+        <?php  }?>  
         </ul>
 		<div class="dropdown">
 			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -88,12 +93,42 @@ $resultadomateria=$conexion->query($materia);
     </nav>
 
     <main role="main">
-      
-
-      <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
         <div class="container">
-          
+          <form action="<?php $_SERVER["PHP_SELF"]?>" method="POST" >
+            Código:<input type="text" name="cod" placeholder="CD101" required="">
+            Asignatura:<input type="text" name="nom" placeholder="Programación" required="">
+            Nota:<input type="number" name="nota" placeholder="99"required="">
+            <input type="submit" name="guardar" class="btn btn-primary"
+            value="Guardar">
+          </form>
+          <hr>
+            <h4 align="center">****Mis Asignaturas****</h4>
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+              <thead>
+                <tr><th>Código</th>
+                <th>Asignatura</th>
+                <th>Nota</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+                </tr>
+              </thead>
+                  <tbody>
+                <?php
+                 while($regmaterias=$resultadomateria->fetch_array(MYSQLI_BOTH)) 
+                { 
+                  echo 
+                    "<tr>
+                      <td>".$regmaterias['codigoasignatura']."</td>
+                      <td>".$regmaterias['nombreasignatura']."</td>
+                      <td>".$regmaterias['nota']."</td>
+                      <td><a href='Editarasignatura.php?id=".$regmaterias['idasignatura']."'>Editar</a></td>
+                    <td><a href='Eliminarasignatura.php?id=".$regmaterias['idasignatura']."'>Eliminar</a></td>
+                    </tr>";}
+                $conexion->close(); 
+                ?>
+                </tbody>
+                </table>
         </div>
       </div>
 
